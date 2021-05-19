@@ -1,0 +1,38 @@
+<h2>Student Details</h2>
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Type student name" autocomplete="off" formControlName="name" required>
+        </mat-form-field>
+    </p> 
+    <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Address</mat-label>
+          <input matInput placeholder="Type student address" autocomplete="off" formControlName="address" required>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>School</mat-label>
+          <input matInput placeholder="Type student school" autocomplete="off" formControlName="school" required>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Subject</mat-label>
+          <input matInput placeholder="Type subject" autocomplete="off" formControlName="subject" required>
+        </mat-form-field>
+    </p>  
+    <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Score</mat-label>
+          <input matInput placeholder="Type score" type="number" autocomplete="off" formControlName="score" required>
+        </mat-form-field>
+    </p>  
+
+    <p>
+        <button mat-raised-button class="back" (click)="goBack()" type="button">Go Back</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!profileForm.valid">Update Details</button>
+    </p>
+</form>
