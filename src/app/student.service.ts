@@ -8,7 +8,7 @@ import { catchError, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class StudentService {
-  studentsUrl = "api/students";
+  studentsUrl = "http://localhost:5000/student";
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -18,7 +18,7 @@ export class StudentService {
   getStudents(): Observable<Student[]>{
     return this.http.get<Student[]>(this.studentsUrl)
     .pipe(
-      tap(_ => console.log("Fetched Students successfully")),
+      tap((val) => console.log("Fetched Students successfully")),
       catchError(this.handleError<Student[]>('getStudents', []))
     );
   }
@@ -33,24 +33,24 @@ export class StudentService {
   }
 
   updateStudent(student: Student): Observable<any> {
-    return this.http.put(this.studentsUrl, student, this.httpOptions)
+    return this.http.post(this.studentsUrl+'/update', student, this.httpOptions)
     .pipe(
       tap(_ => console.log(`updated student id=${student.id}`)),
       catchError(this.handleError<any>('updateStudent'))
     );
   }
 
-  deleteStudent(id: number): Observable<Student> {
-    const url = `${this.studentsUrl}/${id}`;
+  deleteStudent(id: number): Observable<any> {
+    const url = `${this.studentsUrl}/delete/${id}`;
 
-    return this.http.delete<Student>(url, this.httpOptions).pipe(
+    return this.http.post(url, this.httpOptions).pipe(
       tap(_ => console.log(`deleted student id=${id}`)),
-      catchError(this.handleError<Student>('deleteStudent'))
+      catchError(this.handleError<any>('deleteStudent'))
     );
   }
 
   addStudent(student: Student): Observable<Student> {
-    return this.http.post<Student>(this.studentsUrl, student, this.httpOptions).pipe(
+    return this.http.post<Student>(this.studentsUrl+'/add', student, this.httpOptions).pipe(
       tap((newStudent: Student) => console.log(`added student w/ id=${newStudent.id}`)),
       catchError(this.handleError<Student>('addStudent'))
     );

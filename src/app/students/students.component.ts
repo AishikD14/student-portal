@@ -21,6 +21,8 @@ export class StudentsComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'address', 'school', 'subject', 'score'];
   dataSource: any;
   expandedElement: Student | null;
+  noData: boolean = false;
+  noStudentData: boolean = false;
 
   constructor(private studentService: StudentService) { }
 
@@ -32,6 +34,7 @@ export class StudentsComponent implements OnInit {
     this.studentService.getStudents().subscribe(students => { 
       this.students = students; 
       this.dataSource = new MatTableDataSource(this.students);
+      this.noStudentData = students.length ? false : true;
     });
   }
 
@@ -40,13 +43,14 @@ export class StudentsComponent implements OnInit {
     .subscribe(_ => {
       this.students = this.students.filter(h => h !== student);
       this.dataSource = new MatTableDataSource(this.students);
+      this.noStudentData = this.students.length ? false : true;
     });
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    console.log(this.dataSource.filteredData);
+    this.noData = this.dataSource.filteredData.length ? false : true;
   }
 
 }
