@@ -8,7 +8,7 @@ import { catchError, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class StudentService {
-  studentsUrl = "http://localhost:5000/student";
+  studentsUrl = "https://student-portal-server.herokuapp.com/student";
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
