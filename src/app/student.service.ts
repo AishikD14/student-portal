@@ -9,14 +9,18 @@ import { catchError, tap } from 'rxjs/operators';
 })
 export class StudentService {
   studentsUrl = "https://student-portal-server.herokuapp.com/student";
+  // studentsUrl = "http://localhost:5000/student";
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 
+      'Content-Type': 'application/json',
+      'Authorization' : "Basic " + btoa('admin:admin')
+    })
   };
 
   constructor(private http: HttpClient) { }
 
   getStudents(): Observable<Student[]>{
-    return this.http.get<Student[]>(this.studentsUrl)
+    return this.http.get<Student[]>(this.studentsUrl, this.httpOptions)
     .pipe(
       tap((val) => console.log("Fetched Students successfully")),
       catchError(this.handleError<Student[]>('getStudents', []))
@@ -25,7 +29,7 @@ export class StudentService {
 
   getStudent(id: number): Observable<Student>{
     const url = `${this.studentsUrl}/${id}`;
-    return this.http.get<Student>(url)
+    return this.http.get<Student>(url, this.httpOptions)
     .pipe(
       tap(_ => console.log("Fetched Student successfully")),
       catchError(this.handleError<Student>(`getStudent id = ${id}`))
@@ -43,7 +47,7 @@ export class StudentService {
   deleteStudent(id: number): Observable<any> {
     const url = `${this.studentsUrl}/delete/${id}`;
 
-    return this.http.post(url, this.httpOptions).pipe(
+    return this.http.delete(url, this.httpOptions).pipe(
       tap(_ => console.log(`deleted student id=${id}`)),
       catchError(this.handleError<any>('deleteStudent'))
     );
