@@ -18,7 +18,7 @@ router.route('/update').post((req,res) => {
     res.json("updated student");
 });
 
-router.route('/delete/:id').post((req,res) => {
+router.route('/delete/:id').delete((req,res) => {
     const id = req.params.id;
     students = students.filter(student => student.id != id);
     res.json("deleted student");

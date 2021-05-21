@@ -20,9 +20,9 @@ app.route('/').get((req,res) => {
 })
 
 // Route Authentication
-// app.use(basicAuth({
-//     users: { 'admin': 'admin' }
-// }));
+app.use(basicAuth({
+    users: { 'admin': 'admin' }
+}));
 
 // User router
 const studentsRouter = require('./routes/student');
