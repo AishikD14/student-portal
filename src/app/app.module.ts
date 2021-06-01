@@ -10,10 +10,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StudentsComponent } from './students/students.component';
+import { StudentsComponent } from './views/students/students.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { StudentDetailComponent } from './student-detail/student-detail.component';
-import { AddStudentComponent } from './add-student/add-student.component';
+import { StudentDetailComponent } from './views/student-detail/student-detail.component';
+import { AddStudentComponent } from './views/add-student/add-student.component';
 
 @NgModule({
   declarations: [
