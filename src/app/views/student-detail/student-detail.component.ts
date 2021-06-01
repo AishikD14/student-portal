@@ -14,7 +14,7 @@ import { Validators } from '@angular/forms';
 export class StudentDetailComponent implements OnInit {
   student: Student;
   profileForm: any;
-  
+  loader: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +36,7 @@ export class StudentDetailComponent implements OnInit {
 
   getStudent(){
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.loader = true;
     this.studentService.getStudent(id)
       .subscribe(student => {
         this.student = student;
@@ -45,7 +46,8 @@ export class StudentDetailComponent implements OnInit {
           school: student.school,
           subject: student.subject,
           score: student.score
-        })
+        });
+        this.loader = false;
       });
   }
 

@@ -13,6 +13,7 @@ import { Validators } from '@angular/forms';
 export class AddStudentComponent implements OnInit {
   newStudent: any = {};
   profileForm: any;
+  loader: boolean = false;
 
   constructor(
     private studentService: StudentService,
@@ -36,8 +37,10 @@ export class AddStudentComponent implements OnInit {
     this.newStudent["school"] = this.profileForm.value.school.trim();
     this.newStudent["subject"] = this.profileForm.value.subject.trim();
     this.newStudent["score"] = this.profileForm.value.score;
+    this.loader = true;
     this.studentService.addStudent(this.newStudent as Student)
       .subscribe(_ => {
+        this.loader = false;
         this.location.back();
       });
   }

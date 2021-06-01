@@ -23,6 +23,7 @@ export class StudentsComponent implements OnInit {
   expandedElement: Student | null;
   noData: boolean = false;
   noStudentData: boolean = false;
+  loader: boolean = false;
 
   constructor(private studentService: StudentService) { }
 
@@ -31,10 +32,12 @@ export class StudentsComponent implements OnInit {
   }
 
   getStudents(): void {
+    this.loader = true;
     this.studentService.getStudents().subscribe(students => { 
       this.students = students; 
       this.dataSource = new MatTableDataSource(this.students);
       this.noStudentData = students.length ? false : true;
+      this.loader = false;
     });
   }
 
