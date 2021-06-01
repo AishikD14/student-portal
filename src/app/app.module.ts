@@ -15,13 +15,15 @@ import { StudentsComponent } from './views/students/students.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StudentDetailComponent } from './views/student-detail/student-detail.component';
 import { AddStudentComponent } from './views/add-student/add-student.component';
+import { LoginComponent } from './views/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StudentsComponent,
     StudentDetailComponent,
-    AddStudentComponent
+    AddStudentComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
