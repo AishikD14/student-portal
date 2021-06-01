@@ -6,11 +6,11 @@ import { StudentsComponent } from './views/students/students.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/students', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'students', component: StudentsComponent },
   { path: 'student-detail/:id', component: StudentDetailComponent },
   { path: 'add-student', component: AddStudentComponent },
-  { path: '**', redirectTo: '/students' }
+  { path: 'login', loadChildren: () => import('./views/login/login.module').then(m => m.LoginModule) }
 ];
 
 @NgModule({
