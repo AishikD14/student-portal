@@ -9,6 +9,9 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxLoadingModule } from 'ngx-loading';
 
+import { NgRedux, NgReduxModule } from '@angular-redux/store';
+import { IAppState, rootReducer, INITIAL_STATE } from './store';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StudentsComponent } from './views/students/students.component';
@@ -36,9 +39,14 @@ import { HeaderComponent } from './core/header/header.component';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    NgxLoadingModule
+    NgxLoadingModule,
+    NgReduxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(ngRedux: NgRedux<IAppState>){
+    ngRedux.configureStore(rootReducer, INITIAL_STATE);
+  }
+}

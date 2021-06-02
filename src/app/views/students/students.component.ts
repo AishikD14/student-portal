@@ -3,6 +3,9 @@ import { Student } from '../../student';
 import { StudentService } from '../../services/student/student.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatTableDataSource} from '@angular/material/table';
+import { NgRedux, select } from '@angular-redux/store';
+import { IAppState } from '../../store';
+import { SET_COUNT } from '../../actions';
 
 @Component({
   selector: 'app-students',
@@ -17,6 +20,7 @@ import {MatTableDataSource} from '@angular/material/table';
   ],
 })
 export class StudentsComponent implements OnInit {
+
   students: Student[];
   displayedColumns: string[] = ['id', 'name', 'address', 'school', 'subject', 'score'];
   dataSource: any;
