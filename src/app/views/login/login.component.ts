@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LoginService } from 'src/app/services/login/login.service';
 
 @Component({
@@ -10,12 +11,14 @@ import { LoginService } from 'src/app/services/login/login.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: any;
-  credentials: any = {};
+  name: string = "";
+  password: string = "";
   loader: boolean = false;
 
   constructor(
     private fb: FormBuilder,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private router: Router
     ) { }
 
   ngOnInit(): void {
@@ -26,15 +29,18 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(){
-    this.credentials["name"] = this.loginForm.value.name.trim();
-    this.credentials["password"] = this.loginForm.value.password.trim();
-    console.log(this.credentials);
-    // this.loader = true;
-    // this.loginService.addStudent(this.newStudent as Student)
-    //   .subscribe(_ => {
-    //     this.loader = false;
-    //     this.location.back();
-    //   });
+    this.name = this.loginForm.value.name.trim();
+    this.password = this.loginForm.value.password.trim();
+    this.loader = true;
+    this.loginService.loginUser(this.name,this.password)
+      .subscribe((res) => {
+        if(res.success == true){
+          console.log("Login Successfull");
+          this.router.navigate(["students"]);
+        }
+        else
+        console.log("Login failed");
+      })
   }
 
 }
