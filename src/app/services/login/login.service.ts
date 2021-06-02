@@ -14,11 +14,6 @@ export class LoginService {
     })
   };
 
-  // Make this false when login implemented
-  isLoggedIn: boolean = false;
-  name!: string;
-
-
   constructor(private http: HttpClient) { }
 
   loginUser(email: string, password: string): Observable<any>{
@@ -26,8 +21,8 @@ export class LoginService {
     .pipe(
       tap((res) => {
         if(res.success == true){
-          this.isLoggedIn = true;
-          this.name = res.name;
+          sessionStorage.setItem('loggedIn', "true");
+          sessionStorage.setItem('loginName', res.name);
         }
         console.log(`Login verification successful`);
       }),
@@ -36,11 +31,18 @@ export class LoginService {
   }
 
   logoutUser(){
-    this.isLoggedIn = false;
+    sessionStorage.removeItem('loggedIn');
+    sessionStorage.removeItem('loginName');
   }
 
   isUserLoggedIn(): boolean{
-    return this.isLoggedIn;
+    let loginValue = sessionStorage.getItem('loggedIn');
+    if(loginValue == "true"){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

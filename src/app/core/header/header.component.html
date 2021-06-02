@@ -1,1 +1,16 @@
-<p>header works!</p>
+<nav *ngIf="notLoginPage" class="student-navbar">
+    <div class="clearfix">
+        <div class="left-side">
+            <div class="title"><a routerLink="/students">Student Portal</a></div>
+            <ul>
+                <li><a routerLink="/students">Dashboard</a></li>
+                <li><a routerLink="/add-student">Add Students</a></li>
+                <li>Total Count: 5</li>
+            </ul>
+        </div>
+        <div class="right-side">
+            <p class="name">Hi, {{userName}}</p>
+            <a class="logout" (click)="logout()">Logout</a>
+        </div>
+    </div>
+</nav>
