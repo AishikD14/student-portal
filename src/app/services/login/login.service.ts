@@ -11,7 +11,8 @@ import { SET_NAME } from '../../actions';
 })
 export class LoginService {
 
-  private productsUrl = "https://electronics-backend1.herokuapp.com";
+  studentsUrl = "https://student-portal-server.herokuapp.com/student";
+  // studentsUrl = "http://localhost:5000/student";
   httpOptions = {
     headers: new HttpHeaders({ 
       'Content-Type': 'application/json'
@@ -21,7 +22,7 @@ export class LoginService {
   constructor(private http: HttpClient, private ngRedux: NgRedux<IAppState>) { }
 
   loginUser(email: string, password: string): Observable<any>{
-    return this.http.post<any>(this.productsUrl+'/login-user', {"userName": email, "password": password}, this.httpOptions)
+    return this.http.post<any>(this.studentsUrl+'/login', {"userName": email, "password": password}, this.httpOptions)
     .pipe(
       tap((res) => {
         if(res.success == true){
