@@ -2,11 +2,15 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
+import { NgRedux } from '@angular-redux/store';
+import { IAppState } from '../../store';
+import { SET_NAME } from '../../actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
+
   private productsUrl = "https://electronics-backend1.herokuapp.com";
   httpOptions = {
     headers: new HttpHeaders({ 
@@ -14,7 +18,7 @@ export class LoginService {
     })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private ngRedux: NgRedux<IAppState>) { }
 
   loginUser(email: string, password: string): Observable<any>{
     return this.http.post<any>(this.productsUrl+'/login-user', {"userName": email, "password": password}, this.httpOptions)
@@ -23,6 +27,7 @@ export class LoginService {
         if(res.success == true){
           sessionStorage.setItem('loggedIn', "true");
           sessionStorage.setItem('loginName', res.name);
+          this.ngRedux.dispatch({type: SET_NAME, name: res.name});
         }
         console.log(`Login verification successful`);
       }),
@@ -38,6 +43,7 @@ export class LoginService {
   isUserLoggedIn(): boolean{
     let loginValue = sessionStorage.getItem('loggedIn');
     if(loginValue == "true"){
+      this.ngRedux.dispatch({type: SET_NAME, name: sessionStorage.getItem('loginName')});
       return true;
     }
     else{

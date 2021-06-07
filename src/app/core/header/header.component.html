@@ -5,11 +5,11 @@
             <ul>
                 <li><a routerLink="/students">Dashboard</a></li>
                 <li><a routerLink="/add-student">Add Students</a></li>
-                <li>Total Count: 5</li>
+                <li>Total Count: {{ count | async }}</li>
             </ul>
         </div>
         <div class="right-side">
-            <p class="name">Hi, {{userName}}</p>
+            <p class="name">Hi, {{ name | async }}</p>
             <a class="logout" (click)="logout()">Logout</a>
         </div>
     </div>
