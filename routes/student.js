@@ -5,6 +5,17 @@ router.route('/').get((req,res) => {
     res.json(students);
 });
 
+router.route('/login').post((req,res) => {
+    const name = req.body.userName;
+    const password = req.body.password;
+    if(name=="test" && password=="12345"){
+        res.json({"success": true, "name": "Aishik Deb"});
+    }
+    else{
+        res.json({"success": false});
+    }
+});
+
 router.route('/:id').get((req,res) => {
     const id = req.params.id;
     const student = students.find((student) => student.id == id);
