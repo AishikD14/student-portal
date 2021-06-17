@@ -1,8 +1,12 @@
 const router = require('express').Router();
-var students = require('../database');
+let Student = require('../models/student.model');
 
 router.route('/').get((req,res) => {
-    res.json(students);
+    Student.find()
+        .then(students => {
+            res.json(students);
+        })
+        .catch(err => res.status(400).json('Error:' + err));
 });
 
 router.route('/login').post((req,res) => {
@@ -17,31 +21,66 @@ router.route('/login').post((req,res) => {
 });
 
 router.route('/:id').get((req,res) => {
-    const id = req.params.id;
-    const student = students.find((student) => student.id == id);
-    res.json(student);
+    const filterId = req.params.id;
+    Student.findOne({ id: filterId }, 'id name address school subject score')
+        .then(student => {
+            if(!student){
+                res.status(204).json({'message': 'Failed'});
+            }
+            else{
+                res.json(student);
+            }
+        })
+        .catch(err => res.status(400).json('Error:' + err));
 });
 
 router.route('/update').post((req,res) => {
-    const student = req.body;
-    const index = students.findIndex((element) => element.id == student.id);
-    students[index] = student;
-    res.json("updated student");
+    const updatedStudent = req.body;
+    Student.findOne({ id: updatedStudent.id })
+        .then(student => {
+            if(!student){
+                res.json({'message': 'Failed'});
+            }
+            else{
+                student.name = updatedStudent.name;
+                student.address = updatedStudent.address;
+                student.school = updatedStudent.school;
+                student.subject = updatedStudent.subject;
+                student.score = updatedStudent.score;
+                student.save()
+                    .then(() => {
+                        res.json({"message": "Success"});
+                    })
+                    .catch(err => res.status(400).json('Error:' + err));
+            }
+        })
+        .catch(err => res.status(400).json('Error:' + err));
 });
 
 router.route('/delete/:id').delete((req,res) => {
-    const id = req.params.id;
-    students = students.filter(student => student.id != id);
-    res.json("deleted student");
+    const deleteId = req.params.id;
+    Student.deleteOne({ id: deleteId })
+        .then(() => {
+            res.json({"message": "Success"});
+        })
+        .catch(err => res.status(400).json('Error:' + err));
 });
 
 router.route('/add').post((req,res) => {
     const student = req.body;
-    const newId = students.length ? students[students.length-1].id + 1 : 1;
-    var newStudent = student;
-    newStudent["id"] = newId;
-    students.push(newStudent);
-    res.json(newStudent);
+    Student.find()
+        .then(students => {
+            const newId = students[students.length-1].id + 1;
+            const newStudent = new Student({ id: newId, name: student.name, address: student.address, school: student.school, subject: student.subject, score: student.score });
+            console.log(newStudent);
+
+            newStudent.save()
+                .then(() => res.status(201).json({
+                    "message": "Success"
+                }))
+                .catch(err => res.status(400).json('Error:' + err));
+        })
+        .catch(err => res.status(400).json('Error:' + err));
 });
 
 module.exports = router;

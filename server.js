@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 const basicAuth = require('express-basic-auth');
 const http = require('http');
 
@@ -14,17 +15,28 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
+//MongoDB Connection
+const uri = process.env.ATLAS_URI;
+mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true})
+    .then()
+    .catch(err => console.log('Error:' + err));
+
+const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log('MongoDB connection established successfully');
+})
+
 // Server Status
 app.route('/').get((req,res) => {
     res.json("Server started successfully on " + startTime);
 })
 
 // Route Authentication
-// app.use(basicAuth({
-//     users: { 'admin': 'admin' }
-// }));
+app.use(basicAuth({
+    users: { 'admin': 'admin' }
+}));
 
-// User router
+// Student router
 const studentsRouter = require('./routes/student');
 app.use('/student',studentsRouter);
 
