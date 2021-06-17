@@ -11,8 +11,8 @@ import { SET_NAME } from '../../actions';
 })
 export class LoginService {
 
-  // studentsUrl = "https://student-portal-server.herokuapp.com/student";
-  studentsUrl = "http://localhost:5000/student";
+  studentsUrl = "https://student-portal-server.herokuapp.com/student";
+  // studentsUrl = "http://localhost:5000/student";
   httpOptions = {
     headers: new HttpHeaders({ 
       'Content-Type': 'application/json',
