@@ -1,8 +1,8 @@
 <ngx-loading [show]="loader" [config]="{fullScreenBackdrop: true }"></ngx-loading>
 <form class="modal-content animate" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="imgcontainer">
+    <!-- <div class="imgcontainer">
         <img src="/assets/img_avatar2.png" alt="Avatar" class="avatar">
-    </div>
+    </div> -->
 
     <div class="container">
         <label for="uname"><b>Username</b></label>
@@ -13,7 +13,7 @@
 
         <button type="submit">Login</button>
         <label>
-            <input type="checkbox" checked="checked" name="remember"> Remember me
+            <input type="checkbox" name="remember" formControlName="remember"> Remember me
         </label>
     </div>
 </form>

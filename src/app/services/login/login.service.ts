@@ -11,23 +11,28 @@ import { SET_NAME } from '../../actions';
 })
 export class LoginService {
 
-  studentsUrl = "https://student-portal-server.herokuapp.com/student";
-  // studentsUrl = "http://localhost:5000/student";
+  // studentsUrl = "https://student-portal-server.herokuapp.com/student";
+  studentsUrl = "http://localhost:5000/student";
   httpOptions = {
     headers: new HttpHeaders({ 
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization' : "Basic " + btoa('admin:admin')
     })
   };
+  isLoggedIn: boolean = false;
 
   constructor(private http: HttpClient, private ngRedux: NgRedux<IAppState>) { }
 
-  loginUser(email: string, password: string): Observable<any>{
+  loginUser(email: string, password: string, remember: boolean): Observable<any>{
     return this.http.post<any>(this.studentsUrl+'/login', {"userName": email, "password": password}, this.httpOptions)
     .pipe(
       tap((res) => {
         if(res.success == true){
-          sessionStorage.setItem('loggedIn', "true");
-          sessionStorage.setItem('loginName', res.name);
+          if(remember == true){
+            sessionStorage.setItem('loggedIn', "true");
+            sessionStorage.setItem('loginName', res.name);
+          }
+          this.isLoggedIn = true;
           this.ngRedux.dispatch({type: SET_NAME, name: res.name});
         }
         console.log(`Login verification successful`);
@@ -37,13 +42,16 @@ export class LoginService {
   }
 
   logoutUser(){
+    this.isLoggedIn = false;
     sessionStorage.removeItem('loggedIn');
     sessionStorage.removeItem('loginName');
   }
 
   isUserLoggedIn(): boolean{
-    let loginValue = sessionStorage.getItem('loggedIn');
-    if(loginValue == "true"){
+    if(this.isLoggedIn){
+      return true;
+    }
+    else if(sessionStorage.getItem('loggedIn') == "true"){
       this.ngRedux.dispatch({type: SET_NAME, name: sessionStorage.getItem('loginName')});
       return true;
     }

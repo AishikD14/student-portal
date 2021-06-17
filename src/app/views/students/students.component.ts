@@ -3,7 +3,7 @@ import { Student } from '../../student';
 import { StudentService } from '../../services/student/student.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatTableDataSource} from '@angular/material/table';
-import { NgRedux, select } from '@angular-redux/store';
+import { NgRedux } from '@angular-redux/store';
 import { IAppState } from '../../store';
 import { SET_COUNT } from '../../actions';
 
@@ -29,7 +29,7 @@ export class StudentsComponent implements OnInit {
   noStudentData: boolean = false;
   loader: boolean = false;
 
-  constructor(private studentService: StudentService) { }
+  constructor(private studentService: StudentService, private ngRedux: NgRedux<IAppState>) { }
 
   ngOnInit(): void {
     this.getStudents();
@@ -51,6 +51,7 @@ export class StudentsComponent implements OnInit {
       this.students = this.students.filter(h => h !== student);
       this.dataSource = new MatTableDataSource(this.students);
       this.noStudentData = this.students.length ? false : true;
+      this.ngRedux.dispatch({type: SET_COUNT, count: this.students.length});
     });
   }
 

@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   loginForm: any;
   name: string = "";
   password: string = "";
+  remember: boolean = false;
   loader: boolean = false;
 
   constructor(
@@ -24,22 +25,27 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       name: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      remember: [false]
     });
   }
 
   onSubmit(){
     this.name = this.loginForm.value.name.trim();
     this.password = this.loginForm.value.password.trim();
+    this.remember = this.loginForm.value.remember;
     this.loader = true;
-    this.loginService.loginUser(this.name,this.password)
+    this.loginService.loginUser(this.name, this.password, this.remember)
       .subscribe((res) => {
         if(res.success == true){
           console.log("Login Successfull");
+          this.loader = false;
           this.router.navigate(["students"]);
         }
-        else
-        console.log("Login failed");
+        else{
+          this.loader = false;
+          console.log("Login failed");
+        }
       })
   }
 
